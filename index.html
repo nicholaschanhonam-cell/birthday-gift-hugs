@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Happy 27th Birthday Tiffany 🏰✨</title>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      color: #FFFFFF;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow-x: hidden;
+      position: relative;
+      /* 使用本地迪士尼城堡背景 */
+      background: linear-gradient(to bottom, rgba(10, 8, 25, 0.40), rgba(10, 8, 25, 0.75)),
+                  url('250180.jpg') no-repeat center center fixed;
+      background-size: cover;
+    }
+
+    /* 煙花 Canvas 覆蓋層 */
+    #fireworksCanvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    /* 主內容區塊 */
+    .main-container {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      max-width: 440px;
+      padding: 30px 20px 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .top-badge {
+      display: inline-block;
+      border: 1.5px solid rgba(252, 211, 77, 0.8);
+      background: rgba(245, 158, 11, 0.25);
+      backdrop-filter: blur(8px);
+      color: #FCD34D;
+      font-size: 13px;
+      font-weight: bold;
+      letter-spacing: 2px;
+      padding: 6px 20px;
+      border-radius: 20px;
+      margin-bottom: 14px;
+      box-shadow: 0 0 20px rgba(245, 158, 11, 0.4);
+      animation: pulseGlow 2s infinite alternate;
+    }
+
+    @keyframes pulseGlow {
+      from { box-shadow: 0 0 10px rgba(245, 158, 11, 0.4); transform: scale(0.98); }
+      to { box-shadow: 0 0 22px rgba(245, 158, 11, 0.8); transform: scale(1.02); }
+    }
+
+    .main-title {
+      font-family: 'Georgia', serif;
+      font-size: 36px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #FFFFFF, #FFE082, #F59E0B);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 6px;
+      font-style: italic;
+      text-shadow: 0 0 25px rgba(252, 211, 77, 0.5);
+      text-align: center;
+    }
+
+    .greeting {
+      font-size: 20px;
+      color: #FFFFFF;
+      font-weight: 700;
+      margin-bottom: 18px;
+      text-align: center;
+      letter-spacing: 0.5px;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
+    }
+
+    /* 特殊提示框 */
+    .notice-box {
+      background: rgba(245, 158, 11, 0.18);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(252, 211, 77, 0.5);
+      border-radius: 16px;
+      padding: 12px 16px;
+      margin-bottom: 24px;
+      font-size: 13.5px;
+      line-height: 1.5;
+      color: #FFE082;
+      text-align: center;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    }
+
+    .love-letter-card {
+      background: rgba(18, 12, 34, 0.78);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1.5px solid rgba(252, 211, 77, 0.4);
+      border-radius: 24px;
+      padding: 24px 22px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.75);
+      margin-bottom: 36px;
+      line-height: 1.85;
+      color: #F3F4F6;
+      font-size: 15.5px;
+      position: relative;
+      text-align: justify;
+    }
+
+    .love-letter-card::before {
+      content: "✨";
+      position: absolute;
+      top: -12px;
+      left: 20px;
+      font-size: 20px;
+    }
+
+    .love-letter-card::after {
+      content: "🏰";
+      position: absolute;
+      bottom: -12px;
+      right: 20px;
+      font-size: 20px;
+    }
+
+    .scroll-guide {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 50px;
+      cursor: pointer;
+      animation: bounce 2s infinite;
+    }
+
+    .scroll-guide p {
+      font-size: 15px;
+      color: #FCD34D;
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+      text-shadow: 0 0 12px rgba(0, 0, 0, 0.9), 0 0 8px rgba(252, 211, 77, 0.6);
+    }
+
+    .scroll-arrow {
+      font-size: 26px;
+      color: #F59E0B;
+    }
+
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+      40% { transform: translateY(-12px); }
+      60% { transform: translateY(-6px); }
+    }
+
+    /* 禮物盒 & 驚喜區域 */
+    .gift-section {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 10px;
+    }
+
+    .gift-card {
+      position: relative;
+      width: 100%;
+      max-width: 310px;
+      min-height: 280px;
+      border-radius: 28px;
+      padding: 24px 16px;
+      background: linear-gradient(135deg, rgba(35, 20, 60, 0.88), rgba(20, 10, 40, 0.92));
+      border: 2px solid rgba(245, 158, 11, 0.8);
+      box-shadow: 0 0 35px rgba(245, 158, 11, 0.5), 0 20px 40px rgba(0, 0, 0, 0.8);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      backdrop-filter: blur(12px);
+    }
+
+    .gift-card:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 50px rgba(245, 158, 11, 0.8), 0 25px 50px rgba(0, 0, 0, 0.9);
+    }
+
+    /* 未打開狀態 */
+    .gift-unopened {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .gift-icon {
+      font-size: 88px;
+      margin-bottom: 12px;
+      filter: drop-shadow(0 0 15px rgba(245, 158, 11, 0.8));
+      animation: floatGift 3s infinite ease-in-out;
+    }
+
+    @keyframes floatGift {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-10px) rotate(3deg); }
+    }
+
+    /* 已打開狀態 */
+    .gift-opened {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      animation: zoomIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes zoomIn {
+      from { opacity: 0; transform: scale(0.8); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .chip-dale-img {
+      width: 100%;
+      max-width: 260px;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      margin-bottom: 16px;
+      border: 1px solid rgba(252, 211, 77, 0.3);
+    }
+
+    .hug-text {
+      font-size: 22px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #FFFFFF, #FFE082, #F59E0B);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+      letter-spacing: 1px;
+    }
+
+    .action-hint {
+      margin-top: 18px;
+      font-size: 15px;
+      color: #FCD34D;
+      text-align: center;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      font-weight: bold;
+      letter-spacing: 0.5px;
+    }
+
+    /* 彈窗 */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.82);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+      padding: 20px;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-card {
+      background: linear-gradient(135deg, rgba(31, 19, 51, 0.96), rgba(17, 9, 36, 0.98));
+      border: 2px solid #F59E0B;
+      border-radius: 28px;
+      padding: 32px 24px;
+      text-align: center;
+      max-width: 320px;
+      width: 100%;
+      box-shadow: 0 0 50px rgba(245, 158, 11, 0.7);
+      transform: scale(0.8) translateY(20px);
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .modal-overlay.active .modal-card {
+      transform: scale(1) translateY(0);
+    }
+
+    .modal-popup-img {
+      width: 100%;
+      max-width: 200px;
+      border-radius: 18px;
+      margin-bottom: 16px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+    }
+
+    .modal-title {
+      font-size: 26px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #FFFFFF, #FFE082, #F59E0B);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 10px;
+    }
+
+    .modal-btn {
+      margin-top: 18px;
+      background: linear-gradient(90deg, #F59E0B, #D97706);
+      color: #111827;
+      border: none;
+      padding: 12px 34px;
+      border-radius: 24px;
+      font-weight: bold;
+      font-size: 15px;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(245, 158, 11, 0.5);
+      transition: transform 0.2s;
+    }
+
+    .modal-btn:active {
+      transform: scale(0.95);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Canvas 背景煙花 -->
+  <canvas id="fireworksCanvas"></canvas>
+
+  <div class="main-container">
+    <div class="top-badge">✨ OCTOBER SPECIAL SURPRISE ✨</div>
+    <div class="main-title">Happy 27th Birthday</div>
+    <div class="greeting">親愛的 Tiffany（曾樂澄）💖</div>
+
+    <div class="notice-box">
+      💡 因為尺寸關係冇辦法放入扭蛋機內，所以特別為妳另外呈獻這份禮物！✨
+    </div>
+
+    <!-- 廣東話情話卡片 -->
+    <div class="love-letter-card">
+      祝妳 27 歲生日快樂呀！🎉🎂<br><br>
+      雖然呢份禮物放唔入扭蛋機，但對妳嘅愛同心意一啲都唔會少！多謝妳一直以來嘅陪伴同體貼，喺我心目中，妳永遠都係最可愛、最珍貴嘅小寶貝。<br><br>
+      希望妳今年許嘅願望全部都實現，每天都充滿笑容，無論去到邊都有我陪住妳、護住妳！愛妳呀 💕
+    </div>
+
+    <div class="scroll-guide" onclick="scrollToGift()">
+      <p>往下拉查看專屬甜蜜驚喜 ⬇️</p>
+      <div class="scroll-arrow">✨</div>
+    </div>
+
+    <!-- 禮物盒 / 抱抱圖片 互動區域 -->
+    <div class="gift-section" id="giftSection">
+      <div class="gift-card" id="giftCard" onclick="openGift()">
+        <!-- 未點擊：顯示禮物盒 -->
+        <div class="gift-unopened" id="giftUnopened">
+          <div class="gift-icon">🎁</div>
+        </div>
+
+        <!-- 點擊後：顯示 Chip 'n' Dale 抱抱圖片 -->
+        <div class="gift-opened" id="giftOpened">
+          <img src="chip and dale.png" alt="Chip 'n' Dale Hug" class="chip-dale-img" onerror="this.onerror=null; this.src='chip and dale.jpg';">
+          <div class="hug-text">送你一個抱抱 🫂💖</div>
+        </div>
+      </div>
+
+      <p class="action-hint" id="actionHint">點擊打開你的禮物</p>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="hugModal">
+    <div class="modal-card">
+      <img src="chip and dale.png" alt="Chip 'n' Dale" class="modal-popup-img" onerror="this.onerror=null; this.src='chip and dale.jpg';">
+      <div class="modal-title">送你一個抱抱！🫂✨</div>
+      <p style="color: #F3F4F6; font-size: 14.5px; line-height: 1.6;">願妳 27 歲嘅每一天都充滿笑容同甜甜蜜蜜！生日快樂，我嘅小寶貝 💕</p>
+      <button class="modal-btn" onclick="closeModal()">收落心仔 💕</button>
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('fireworksCanvas');
+    const ctx = canvas.getContext('2d');
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    // 煙花粒子系統
+    class Particle {
+      constructor(x, y, color) {
+        this.x = x;
+        this.y = y;
+        this.color = color;
+        this.radius = Math.random() * 2.5 + 1;
+        this.velocity = {
+          x: (Math.random() - 0.5) * 7,
+          y: (Math.random() - 0.5) * 7
+        };
+        this.alpha = 1;
+        this.friction = 0.96;
+        this.gravity = 0.03;
+      }
+
+      draw() {
+        ctx.save();
+        ctx.globalAlpha = this.alpha;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = this.color;
+        ctx.fill();
+        ctx.restore();
+      }
+
+      update() {
+        this.velocity.x *= this.friction;
+        this.velocity.y *= this.friction;
+        this.velocity.y += this.gravity;
+        this.x += this.velocity.x;
+        this.y += this.velocity.y;
+        this.alpha -= 0.012;
+      }
+    }
+
+    let particles = [];
+    const colors = ['#FCD34D', '#F59E0B', '#EC4899', '#60A5FA', '#A78BFA', '#FFFFFF'];
+
+    function createFirework(x, y) {
+      const particleCount = 45;
+      const color = colors[Math.floor(Math.random() * colors.length)];
+      for (let i = 0; i < particleCount; i++) {
+        particles.push(new Particle(x, y, color));
+      }
+    }
+
+    function animateFireworks() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      if (Math.random() < 0.045) {
+        createFirework(
+          Math.random() * canvas.width,
+          Math.random() * (canvas.height * 0.55)
+        );
+      }
+
+      particles.forEach((particle, index) => {
+        if (particle.alpha > 0) {
+          particle.update();
+          particle.draw();
+        } else {
+          particles.splice(index, 1);
+        }
+      });
+
+      requestAnimationFrame(animateFireworks);
+    }
+
+    window.onload = function() {
+      animateFireworks();
+    };
+
+    function scrollToGift() {
+      document.getElementById('giftSection').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    let isGiftOpened = false;
+
+    function openGift() {
+      if (isGiftOpened) {
+        // 如果已經打開過，再次點擊打開彈窗
+        document.getElementById('hugModal').classList.add('active');
+        return;
+      }
+
+      isGiftOpened = true;
+
+      // 切換禮物盒為 Chip 'n' Dale 圖片
+      document.getElementById('giftUnopened').style.display = 'none';
+      document.getElementById('giftOpened').style.display = 'flex';
+      document.getElementById('actionHint').innerText = '點擊圖片可再次接收抱抱 💖';
+
+      // 觸發彩色禮花慶祝
+      confetti({
+        particleCount: 180,
+        spread: 110,
+        origin: { y: 0.65 },
+        colors: ['#FCD34D', '#F59E0B', '#EC4899', '#60A5FA', '#FFFFFF']
+      });
+
+      // 延遲彈出「送你一個抱抱」彈窗
+      setTimeout(() => {
+        document.getElementById('hugModal').classList.add('active');
+      }, 600);
+    }
+
+    function closeModal() {
+      document.getElementById('hugModal').classList.remove('active');
+    }
+  </script>
+</body>
+</html>
